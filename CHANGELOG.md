@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-03-31 — fix: add git pull --rebase before push to fix non-fast-forward error (itsikramovs)
+- 2026-03-31 — chore: update CHANGELOG [skip ci] (github-actions[bot])
 - 2026-03-31 — ci: add deploy workflow (itsikramovs)
 - 2026-03-31 — Delete .github (itsikramovs)
 - 2026-03-31 — Create .github (itsikramovs)
