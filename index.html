@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Togora — Документация</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c10;
+  --surface:#0f1117;
+  --border:rgba(255,255,255,0.07);
+  --text:#e8eaf0;
+  --muted:rgba(255,255,255,0.38);
+  --orange:#FF6B00;
+  --red:#E94560;
+  --blue:#2563EB;
+  --green:#16a34a;
+}
+html,body{height:100%;overflow:hidden;font-family:'Manrope',sans-serif;background:var(--bg);color:var(--text)}
+
+/* NAV */
+.nav{height:50px;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:4px;flex-shrink:0;position:relative;z-index:10}
+.nav-logo{display:flex;align-items:center;gap:8px;margin-right:24px;cursor:pointer;text-decoration:none}
+.nav-logo-icon{width:28px;height:28px;background:linear-gradient(135deg,#FF6B00,#FF8A3D);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px}
+.nav-logo-text{font-size:14px;font-weight:800;color:#fff;letter-spacing:-0.3px}
+.nav-logo-text span{color:var(--orange)}
+.nav-tab{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:7px;font-size:12.5px;font-weight:600;color:var(--muted);cursor:pointer;border:none;background:transparent;font-family:'Manrope',sans-serif;transition:all 0.15s;white-space:nowrap;position:relative}
+.nav-tab:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.nav-tab.active{color:#fff;background:rgba(255,255,255,0.08)}
+.nav-tab .dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.nav-tab[data-id="courier"] .dot{background:var(--red)}
+.nav-tab[data-id="merchant"] .dot{background:var(--orange)}
+.nav-tab[data-id="client"] .dot{background:var(--blue)}
+.nav-tab[data-id="admin"] .dot{background:var(--green)}
+.nav-tab.active[data-id="courier"]{border-bottom:2px solid var(--red);border-radius:7px 7px 0 0}
+.nav-tab.active[data-id="merchant"]{border-bottom:2px solid var(--orange);border-radius:7px 7px 0 0}
+.nav-tab.soon{opacity:0.4;cursor:default}
+.nav-tab.soon:hover{background:transparent;color:var(--muted)}
+.soon-badge{font-size:9px;font-family:'JetBrains Mono',monospace;background:rgba(255,255,255,0.08);color:var(--muted);padding:1px 5px;border-radius:3px}
+.nav-right{margin-left:auto;font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--muted)}
+
+/* MAIN */
+.main{flex:1;overflow:hidden;display:flex;flex-direction:column;height:calc(100vh - 50px)}
+
+/* HOME */
+.home{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:40px 20px;overflow-y:auto}
+.home.hidden{display:none}
+.home-logo{width:60px;height:60px;background:linear-gradient(135deg,#FF6B00,#FF8A3D);border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 18px;box-shadow:0 0 40px rgba(255,107,0,0.15)}
+.home-title{font-size:32px;font-weight:800;letter-spacing:-1px;color:#fff;text-align:center;margin-bottom:6px}
+.home-title span{color:var(--orange)}
+.home-sub{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,300px));gap:14px;justify-content:center;width:100%;max-width:720px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:24px;cursor:pointer;transition:all 0.18s;position:relative;overflow:hidden;text-align:left}
+.card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;opacity:0;transition:opacity 0.18s}
+.card.courier::after{background:linear-gradient(90deg,var(--red),#f06080)}
+.card.merchant::after{background:linear-gradient(90deg,var(--orange),#FF8A3D)}
+.card.client::after{background:linear-gradient(90deg,var(--blue),#60a5fa)}
+.card.admin::after{background:linear-gradient(90deg,var(--green),#4ade80)}
+.card:hover{border-color:rgba(255,255,255,0.14);transform:translateY(-2px)}
+.card:hover::after{opacity:1}
+.card.soon{opacity:0.45;cursor:default}
+.card.soon:hover{transform:none;border-color:var(--border)}
+.card.soon:hover::after{opacity:0}
+.card-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:14px}
+.card.courier .card-icon{background:rgba(233,69,96,0.12)}
+.card.merchant .card-icon{background:rgba(255,107,0,0.12)}
+.card.client .card-icon{background:rgba(37,99,235,0.12)}
+.card.admin .card-icon{background:rgba(22,163,74,0.12)}
+.card-title{font-size:15px;font-weight:700;color:#fff;margin-bottom:5px}
+.card-desc{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:14px}
+.card-chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:10px;font-family:'JetBrains Mono',monospace;padding:2px 7px;border-radius:4px;font-weight:500}
+.chip-red{background:rgba(233,69,96,0.12);color:var(--red)}
+.chip-orange{background:rgba(255,107,0,0.12);color:var(--orange)}
+.chip-blue{background:rgba(37,99,235,0.12);color:#60a5fa}
+.chip-green{background:rgba(22,163,74,0.12);color:#4ade80}
+.chip-gray{background:rgba(255,255,255,0.06);color:var(--muted)}
+
+/* FRAMES */
+.frame-wrap{position:absolute;top:50px;left:0;right:0;bottom:0;display:none}
+.frame-wrap.active{display:block}
+.frame-loader{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;z-index:5;transition:opacity 0.3s}
+.frame-loader.done{opacity:0;pointer-events:none}
+.spinner{width:32px;height:32px;border:2px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin 0.7s linear infinite}
+.loader-text{font-size:12px;color:var(--muted)}
+@keyframes spin{to{transform:rotate(360deg)}}
+iframe{width:100%;height:100%;border:none;display:block}
+</style>
+</head>
+<body style="display:flex;flex-direction:column">
+
+<nav class="nav">
+  <a class="nav-logo" href="#" onclick="showHome();return false">
+    <div class="nav-logo-icon">🍽</div>
+    <span class="nav-logo-text">Tog<span>'</span>ora</span>
+  </a>
+
+  <button class="nav-tab" data-id="courier" onclick="openDoc('courier')">
+    <span class="dot"></span>Курьер
+  </button>
+  <button class="nav-tab" data-id="merchant" onclick="openDoc('merchant')">
+    <span class="dot"></span>Мерчант
+  </button>
+  <button class="nav-tab soon" data-id="client">
+    <span class="dot"></span>Клиент
+    <span class="soon-badge">скоро</span>
+  </button>
+  <button class="nav-tab soon" data-id="admin">
+    <span class="dot"></span>Админ
+    <span class="soon-badge">скоро</span>
+  </button>
+
+  <div class="nav-right">2 / 4 модуля</div>
+</nav>
+
+<!-- HOME -->
+<div class="home" id="home">
+  <div class="home-logo">🍽</div>
+  <h1 class="home-title">Tog<span>'</span>ora</h1>
+  <p class="home-sub">Единая документация платформы</p>
+
+  <div class="cards">
+    <div class="card courier" onclick="openDoc('courier')">
+      <div class="card-icon">🚚</div>
+      <div class="card-title">Курьер</div>
+      <div class="card-desc">Статусы, смены, распределение заказов, инциденты, уведомления.</div>
+      <div class="card-chips">
+        <span class="chip chip-red">Courier</span>
+        <span class="chip chip-gray">v1</span>
+      </div>
+    </div>
+
+    <div class="card merchant" onclick="openDoc('merchant')">
+      <div class="card-icon">🏪</div>
+      <div class="card-title">Мерчант</div>
+      <div class="card-desc">Подключение партнёров, управление меню, заказы, аналитика.</div>
+      <div class="card-chips">
+        <span class="chip chip-orange">Merchant</span>
+        <span class="chip chip-gray">v1</span>
+      </div>
+    </div>
+
+    <div class="card client soon">
+      <div class="card-icon">📱</div>
+      <div class="card-title">Клиент</div>
+      <div class="card-desc">Клиентское приложение. Документация будет добавлена.</div>
+      <div class="card-chips">
+        <span class="chip chip-blue">Client</span>
+        <span class="chip chip-gray">скоро</span>
+      </div>
+    </div>
+
+    <div class="card admin soon">
+      <div class="card-icon">⚙️</div>
+      <div class="card-title">Админ панель</div>
+      <div class="card-desc">Административная панель. Документация будет добавлена.</div>
+      <div class="card-chips">
+        <span class="chip chip-green">Admin</span>
+        <span class="chip chip-gray">скоро</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- COURIER -->
+<div class="frame-wrap" id="wrap-courier">
+  <div class="frame-loader" id="loader-courier">
+    <div class="spinner"></div>
+    <span class="loader-text">Загрузка документации...</span>
+  </div>
+  <iframe src="togora-courier-docs.html" onload="loaded('courier')"></iframe>
+</div>
+
+<!-- MERCHANT -->
+<div class="frame-wrap" id="wrap-merchant">
+  <div class="frame-loader" id="loader-merchant">
+    <div class="spinner"></div>
+    <span class="loader-text">Загрузка документации...</span>
+  </div>
+  <iframe src="togora-merchant-docs.html" onload="loaded('merchant')"></iframe>
+</div>
+
+<script>
+const modules = ['courier','merchant'];
+
+function showHome() {
+  document.getElementById('home').classList.remove('hidden');
+  modules.forEach(m => document.getElementById('wrap-'+m).classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  history.replaceState(null,'','#');
+}
+
+function openDoc(id) {
+  if (document.querySelector('.nav-tab[data-id="'+id+'"]').classList.contains('soon')) return;
+  document.getElementById('home').classList.add('hidden');
+  modules.forEach(m => document.getElementById('wrap-'+m).classList.remove('active'));
+  document.getElementById('wrap-'+id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.nav-tab[data-id="'+id+'"]').classList.add('active');
+  history.replaceState(null,'','#'+id);
+}
+
+function loaded(id) {
+  const loader = document.getElementById('loader-'+id);
+  loader.classList.add('done');
+  setTimeout(() => loader.style.display='none', 350);
+}
+
+const hash = location.hash.replace('#','');
+if (hash === 'courier' || hash === 'merchant') openDoc(hash);
+</script>
+</body>
+</html>
