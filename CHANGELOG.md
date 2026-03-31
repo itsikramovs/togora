@@ -1,5 +1,7 @@
 # Changelog
 
+- **2026-03-31** — Delete github/workflows directory (itsikramovs)
+- **2026-03-31** — chore: update CHANGELOG [skip ci] (github-actions[bot])
 - **2026-03-31** — Update deploy.yml (itsikramovs)
 - **2026-03-31** — Create deploy.yml (itsikramovs)
 - **2026-03-31** — Add files via upload (itsikramovs)
