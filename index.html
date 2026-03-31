@@ -112,6 +112,9 @@ iframe{width:100%;height:100%;border:none;display:block}
     <span class="soon-badge">скоро</span>
   </button>
 
+  <button class="nav-tab" data-id="changelog" onclick="openChangelog()">
+    <span style="font-size:11px">📋</span>Changelog
+  </button>
   <div class="nav-right">2 / 4 модуля</div>
 </nav>
 
@@ -182,8 +185,54 @@ iframe{width:100%;height:100%;border:none;display:block}
   <iframe src="togora-merchant-docs.html" onload="loaded('merchant')"></iframe>
 </div>
 
+<!-- CHANGELOG -->
+<div class="frame-wrap" id="wrap-changelog">
+  <div style="height:100%;overflow-y:auto;padding:40px;max-width:800px;margin:0 auto">
+    <h2 style="font-size:22px;font-weight:800;color:#fff;margin-bottom:8px">Changelog</h2>
+    <p style="font-size:13px;color:rgba(255,255,255,0.4);margin-bottom:32px">История изменений документации</p>
+    <div id="changelog-content" style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.7)">
+      <div style="display:flex;align-items:center;gap:10px;color:rgba(255,255,255,0.3)">
+        <div style="width:20px;height:20px;border:2px solid rgba(255,255,255,0.1);border-top-color:#FF6B00;border-radius:50%;animation:spin 0.7s linear infinite"></div>
+        Загрузка...
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
-const modules = ['courier','merchant'];
+const modules = ['courier','merchant','changelog'];
+
+function openChangelog() {
+  document.getElementById('home').classList.add('hidden');
+  modules.forEach(m => document.getElementById('wrap-'+m).classList.remove('active'));
+  document.getElementById('wrap-changelog').classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelector('.nav-tab[data-id="changelog"]').classList.add('active');
+  history.replaceState(null,'','#changelog');
+  loadChangelog();
+}
+
+function loadChangelog() {
+  fetch('CHANGELOG.md')
+    .then(r => r.text())
+    .then(text => {
+      const lines = text.split('\n');
+      let html = '';
+      lines.forEach(line => {
+        if (line.startsWith('# ')) {
+          html += '<h2 style="font-size:18px;font-weight:800;color:#fff;margin-bottom:20px">'+line.slice(2)+'</h2>';
+        } else if (line.startsWith('## ')) {
+          html += '<div style="margin-top:28px;margin-bottom:10px;padding:6px 12px;background:rgba(255,107,0,0.08);border-left:3px solid #FF6B00;border-radius:0 6px 6px 0;font-weight:700;color:#FF6B00;font-size:13px">'+line.slice(3)+'</div>';
+        } else if (line.startsWith('- ')) {
+          html += '<div style="padding:4px 0 4px 16px;border-bottom:1px solid rgba(255,255,255,0.04)">'+line.slice(2)+'</div>';
+        }
+      });
+      document.getElementById('changelog-content').innerHTML = html || '<p style="color:rgba(255,255,255,0.3)">Нет записей</p>';
+    })
+    .catch(() => {
+      document.getElementById('changelog-content').innerHTML = '<p style="color:rgba(255,255,255,0.3)">Не удалось загрузить changelog</p>';
+    });
+}
 
 function showHome() {
   document.getElementById('home').classList.remove('hidden');
@@ -209,6 +258,7 @@ function loaded(id) {
 }
 
 const hash = location.hash.replace('#','');
+  if (hash === 'changelog') openChangelog();
 if (hash === 'courier' || hash === 'merchant') openDoc(hash);
 </script>
 </body>
