@@ -1,5 +1,7 @@
 # Changelog
 
+- 2026-04-01 — Add files via upload (itsikramovs)
+- 2026-03-31 — chore: update CHANGELOG [skip ci] (github-actions[bot])
 - 2026-03-31 — feat: add changelog tab to portal (itsikramovs)
 - 2026-03-31 — chore: update CHANGELOG [skip ci] (github-actions[bot])
 - 2026-03-31 — fix: add git pull --rebase before push to fix non-fast-forward error (itsikramovs)
