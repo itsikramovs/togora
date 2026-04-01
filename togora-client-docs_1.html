@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Togora Client — Продуктовая документация</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary:#2563EB;--primary-light:#3b82f6;--sidebar-bg:#0f1117;--sidebar-text:#a0a8b8;
+    --sidebar-hover:rgba(37,99,235,0.08);--content-bg:#f8f9fc;--surface:#fff;--text:#1a1d2e;
+    --text-secondary:#6b7280;--text-light:#9ca3af;--border:#e5e7eb;--border-dark:#2a2d3a;
+    --success:#10b981;--warning:#f59e0b;--error:#ef4444;--purple:#8b5cf6;
+    --header-height:56px;--sidebar-width:260px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth}
+  body{font-family:'Manrope',sans-serif;background:var(--content-bg);color:var(--text);display:flex;min-height:100vh;font-size:14px;line-height:1.6}
+  .sidebar{width:var(--sidebar-width);background:var(--sidebar-bg);color:var(--sidebar-text);position:fixed;top:0;left:0;height:100vh;overflow-y:auto;z-index:100;display:flex;flex-direction:column;border-right:1px solid var(--border-dark)}
+  .sidebar::-webkit-scrollbar{width:4px} .sidebar::-webkit-scrollbar-thumb{background:rgba(37,99,235,0.3);border-radius:2px}
+  .sidebar-header{padding:24px 20px 20px;border-bottom:1px solid var(--border-dark)}
+  .sidebar-logo{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .sidebar-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+  .sidebar-logo-text{font-size:15px;font-weight:700;color:#fff;letter-spacing:-0.3px}
+  .sidebar-logo-sub{font-size:11px;color:var(--sidebar-text);margin-top:2px}
+  .sidebar-nav{padding:12px 0 24px;flex:1}
+  .nav-group-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:rgba(160,168,184,0.5);padding:12px 20px 4px}
+  .nav-item{display:flex;align-items:center;gap:8px;padding:7px 20px;cursor:pointer;font-size:13px;color:var(--sidebar-text);transition:all 0.15s;border-left:2px solid transparent}
+  .nav-item:hover{background:var(--sidebar-hover);color:#fff}
+  .nav-item.active{background:var(--sidebar-hover);color:var(--primary);border-left-color:var(--primary);font-weight:600}
+  .nav-num{font-size:11px;font-family:'JetBrains Mono',monospace;opacity:0.5;min-width:20px}
+  .topbar{position:fixed;top:0;left:var(--sidebar-width);right:0;height:var(--header-height);background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 32px;z-index:90;justify-content:space-between}
+  .topbar-title{font-size:14px;font-weight:600;color:var(--text-secondary)} .topbar-title span{color:var(--primary)}
+  .topbar-badge{font-size:11px;font-family:'JetBrains Mono',monospace;background:rgba(37,99,235,0.1);color:var(--primary);padding:3px 10px;border-radius:20px;font-weight:600}
+  .content{margin-left:var(--sidebar-width);margin-top:var(--header-height);flex:1;padding:40px 48px;max-width:960px}
+  .section{margin-bottom:64px;scroll-margin-top:80px}
+  .section-header{display:flex;align-items:center;gap:16px;margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid var(--border)}
+  .section-num{font-size:28px;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--primary);opacity:0.4;min-width:48px}
+  .section-title{font-size:22px;font-weight:800;color:var(--text)}
+  h3{font-size:15px;font-weight:700;color:var(--text);margin:24px 0 12px}
+  h4{font-size:12px;font-weight:700;color:var(--text-secondary);margin:16px 0 8px;text-transform:uppercase;letter-spacing:0.5px}
+  p{margin-bottom:12px;color:var(--text-secondary);line-height:1.7}
+  .table-wrap{overflow-x:auto;margin:16px 0;border-radius:8px;border:1px solid var(--border)}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead tr{background:#f1f5f9}
+  th{padding:10px 14px;text-align:left;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-secondary);border-bottom:1px solid var(--border)}
+  td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-secondary);vertical-align:top}
+  tr:last-child td{border-bottom:none} tr:hover td{background:#f8fafc}
+  .badge{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:4px;font-family:'JetBrains Mono',monospace}
+  .badge-blue{background:rgba(37,99,235,0.1);color:var(--primary)}
+  .badge-green{background:rgba(16,185,129,0.1);color:var(--success)}
+  .badge-orange{background:rgba(245,158,11,0.1);color:var(--warning)}
+  .badge-purple{background:rgba(139,92,246,0.1);color:var(--purple)}
+  .badge-gray{background:#f1f5f9;color:var(--text-secondary)}
+  .badge-red{background:rgba(239,68,68,0.1);color:var(--error)}
+  .callout{border-left:3px solid var(--primary);background:rgba(37,99,235,0.04);border-radius:0 8px 8px 0;padding:14px 18px;margin:16px 0;font-size:13px;color:var(--text-secondary)}
+  .callout strong{color:var(--primary)}
+  .callout-warn{border-left-color:var(--warning);background:rgba(245,158,11,0.04)} .callout-warn strong{color:var(--warning)}
+  .callout-purple{border-left-color:var(--purple);background:rgba(139,92,246,0.04)} .callout-purple strong{color:var(--purple)}
+  .callout-success{border-left-color:var(--success);background:rgba(16,185,129,0.04)} .callout-success strong{color:var(--success)}
+  .callout-click{border-left-color:#00B2FF;background:rgba(0,178,255,0.04)} .callout-click strong{color:#00B2FF}
+  .flow{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:12px 0}
+  .flow-step{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--text)}
+  .flow-step.active{background:var(--primary);color:#fff;border-color:var(--primary)}
+  .flow-arrow{color:var(--text-light);font-size:14px}
+  .bullet-list{list-style:none;padding:0;margin:10px 0}
+  .bullet-list li{padding:5px 0 5px 20px;position:relative;font-size:13px;color:var(--text-secondary);border-bottom:1px solid var(--border)}
+  .bullet-list li:last-child{border-bottom:none}
+  .bullet-list li::before{content:'—';position:absolute;left:0;color:var(--primary);font-weight:700}
+  .bullet-list li b{color:var(--text);font-weight:600}
+  .status-flow{display:flex;flex-direction:column;gap:6px;margin:12px 0}
+  .status-item{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px}
+  .status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;margin-top:3px}
+  .hero{background:linear-gradient(135deg,#1e3a8a 0%,#1d4ed8 60%,#7c3aed 100%);border-radius:14px;padding:36px;margin-bottom:48px;color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:'🫙';position:absolute;right:32px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.15}
+  .hero h1{font-size:26px;font-weight:800;margin-bottom:8px}
+  .hero p{font-size:14px;opacity:0.85;max-width:500px;line-height:1.6}
+  .hero-chips{display:flex;gap:8px;margin-top:16px;flex-wrap:wrap}
+  .hero-chip{background:rgba(255,255,255,0.15);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+  .event-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin:16px 0}
+  .event-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:14px 12px;text-align:center}
+  .event-card .emoji{font-size:22px;margin-bottom:6px}
+  .event-card .name{font-size:12px;font-weight:700;color:var(--text);line-height:1.3}
+  .event-card .name-uz{font-size:10px;color:var(--text-light);margin-top:2px}
+  .dish-group{margin:16px 0}
+  .dish-group-title{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-secondary);padding:8px 0;border-bottom:2px solid var(--border);margin-bottom:8px}
+  .dish-card{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin:5px 0}
+  .dish-emoji{font-size:20px;flex-shrink:0}
+  .dish-info{flex:1}
+  .dish-name{font-size:13px;font-weight:700;color:var(--text)}
+  .dish-unit{font-size:11px;color:var(--text-secondary)}
+  .dish-min{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--primary);background:rgba(37,99,235,0.08);padding:2px 8px;border-radius:4px;white-space:nowrap}
+  .screen-block{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin:12px 0}
+  .screen-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+  .screen-title .num{font-family:'JetBrains Mono',monospace;color:var(--primary);font-size:12px;background:rgba(37,99,235,0.1);padding:2px 6px;border-radius:4px}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0}
+  @media(max-width:700px){.two-col{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">📱</div>
+      <div><div class="sidebar-logo-text">Togora Client</div><div class="sidebar-logo-sub">Клиентское приложение</div></div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-group-title">I. Общее</div>
+    <div class="nav-item active" onclick="go('s1')"><span class="nav-num">01</span>Концепция платформы</div>
+    <div class="nav-item" onclick="go('s2')"><span class="nav-num">02</span>Глоссарий</div>
+    <div class="nav-item" onclick="go('s3')"><span class="nav-num">03</span>Целевая аудитория</div>
+    <div class="nav-group-title">II. Мероприятия и блюда</div>
+    <div class="nav-item" onclick="go('s4')"><span class="nav-num">04</span>Типы мероприятий</div>
+    <div class="nav-item" onclick="go('s5')"><span class="nav-num">05</span>Каталог блюд</div>
+    <div class="nav-group-title">III. Авторизация</div>
+    <div class="nav-item" onclick="go('s6')"><span class="nav-num">06</span>Click Super App / вход</div>
+    <div class="nav-group-title">IV. Экраны</div>
+    <div class="nav-item" onclick="go('s7')"><span class="nav-num">07</span>Главный экран</div>
+    <div class="nav-item" onclick="go('s8')"><span class="nav-num">08</span>Каталог и поиск</div>
+    <div class="nav-item" onclick="go('s9')"><span class="nav-num">09</span>Страница заведения</div>
+    <div class="nav-item" onclick="go('s10')"><span class="nav-num">10</span>Карточка блюда</div>
+    <div class="nav-item" onclick="go('s11')"><span class="nav-num">11</span>Корзина</div>
+    <div class="nav-item" onclick="go('s12')"><span class="nav-num">12</span>Оформление заказа</div>
+    <div class="nav-item" onclick="go('s13')"><span class="nav-num">13</span>Оплата</div>
+    <div class="nav-item" onclick="go('s14')"><span class="nav-num">14</span>Отслеживание заказа</div>
+    <div class="nav-item" onclick="go('s15')"><span class="nav-num">15</span>История заказов</div>
+    <div class="nav-item" onclick="go('s16')"><span class="nav-num">16</span>Избранное</div>
+    <div class="nav-item" onclick="go('s17')"><span class="nav-num">17</span>Профиль и адреса</div>
+    <div class="nav-item" onclick="go('s18')"><span class="nav-num">18</span>Уведомления</div>
+    <div class="nav-group-title">V. Дополнительно</div>
+    <div class="nav-item" onclick="go('s19')"><span class="nav-num">19</span>Статусы заказа</div>
+    <div class="nav-item" onclick="go('s20')"><span class="nav-num">20</span>Пользовательские сценарии</div>
+    <div class="nav-item" onclick="go('s21')"><span class="nav-num">21</span>Changelog</div>
+  </nav>
+</aside>
+
+<div class="topbar">
+  <div class="topbar-title">📱 Togora <span>Client</span> — Продуктовая документация</div>
+  <div class="topbar-badge">v1.1</div>
+</div>
+
+<main class="content">
+  <div class="hero">
+    <h1>Togora — Client App</h1>
+    <p>Мобильное приложение для заказа традиционных узбекских блюд большими объёмами на семейные мероприятия. Плов, нарын, манты, самса — килограммами, у проверенных ресторанов.</p>
+    <div class="hero-chips">
+      <span class="hero-chip">Click Super App</span>
+      <span class="hero-chip">Mini App</span>
+      <span class="hero-chip">Предзаказ от 1 часа</span>
+      <span class="hero-chip">Большие объёмы</span>
+      <span class="hero-chip">Ташкент</span>
+    </div>
+  </div>
+
+  <!-- 01 КОНЦЕПЦИЯ -->
+  <section class="section" id="s1">
+    <div class="section-header"><span class="section-num">01</span><span class="section-title">Концепция платформы</span></div>
+    <p>Tog'ora (тогора) — традиционная узбекская практика: когда в семье намечается мероприятие (свадьба, обрезание, поминки), хозяйки заказывают готовые блюда у ресторанов и заведений, специализирующихся на традиционной кухне. Блюда доставляются большими объёмами — килограммами и десятками штук.</p>
+    <div class="callout callout-purple"><strong>Культурный контекст:</strong> это не обычная доставка еды. Это часть узбекской социальной культуры. Клиент — как правило женщина, организующая мероприятие. Мерчант — ресторан или заведение, специализирующееся на приготовлении традиционных блюд для торжеств.</div>
+    <h3>Ключевые отличия от обычной доставки</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Обычная доставка</th><th>Togora</th></tr></thead>
+      <tbody>
+        <tr><td>1–2 порции на человека</td><td>5–50 кг, 20–100 штук на мероприятие</td></div></tr>
+        <tr><td>Любая еда</td><td>Традиционные узбекские блюда</td></tr>
+        <tr><td>Заказ для себя</td><td>Заказ для гостей на мероприятии</td></tr>
+        <tr><td>Обычный ресторан</td><td>Заведения, специализирующиеся на to'y-блюдах</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout"><strong>Слот-система:</strong> заказы принимаются на конкретные временные слоты — 90-минутные окна с 05:00 до 23:00 (12 слотов в сутки). Минимальный срок предзаказа — от 1 часа.</div>
+  </section>
+
+  <!-- 02 ГЛОССАРИЙ -->
+  <section class="section" id="s2">
+    <div class="section-header"><span class="section-num">02</span><span class="section-title">Глоссарий</span></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Термин</th><th>Определение</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-purple">Tog'ora</span></td><td>Традиционная практика заказа блюд у заведения на мероприятие. Буквально — большое блюдо/поднос для угощения гостей</td></tr>
+        <tr><td><span class="badge badge-blue">Слот</span></td><td>Временное окно доставки 90 минут. 12 слотов в сутки с 05:00 до 23:00</td></tr>
+        <tr><td><span class="badge badge-blue">Предзаказ</span></td><td>Заказ оформляется заранее — минимум за 1 час до доставки</td></tr>
+        <tr><td><span class="badge badge-blue">Мерчант</span></td><td>Ресторан или заведение — партнёр платформы, специализирующийся на традиционных блюдах</td></tr>
+        <tr><td><span class="badge badge-blue">To'y</span></td><td>Узбекское торжество, праздник (свадьба, обрезание и др.)</td></tr>
+        <tr><td><span class="badge badge-blue">Aza</span></td><td>Поминальное мероприятие, траурная трапеза</td></tr>
+        <tr><td><span class="badge badge-blue">ARM</span></td><td>Active Resource Management — система управления доступностью мерчанта (в какие слоты принимает заказы)</td></tr>
+        <tr><td><span class="badge badge-blue">Click Super App</span></td><td>Суперприложение Click, внутри которого работает Togora в формате мини-апп</td></tr>
+        <tr><td><span class="badge badge-blue">Mini App</span></td><td>Встроенное приложение внутри Click Super App. MVP-формат запуска Togora Client</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 03 АУДИТОРИЯ -->
+  <section class="section" id="s3">
+    <div class="section-header"><span class="section-num">03</span><span class="section-title">Целевая аудитория</span></div>
+    <div class="callout callout-purple"><strong>Основной портрет:</strong> женщина 30–55 лет, организующая семейное мероприятие в Ташкенте. Хочет заказать традиционные блюда в большом объёме у надёжного заведения.</div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Сегмент</th><th>Сценарий</th><th>Типичный заказ</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-purple">Свадьба (Никох)</span></td><td>Мероприятие на 50–300 гостей</td><td>Плов 30 кг, нарын 10 кг, самса 80 шт</td></tr>
+        <tr><td><span class="badge badge-purple">Обрезание (Суннат туй)</span></td><td>30–100 гостей</td><td>Плов 15 кг, манты 60 шт, шашлык 5 кг</td></tr>
+        <tr><td><span class="badge badge-purple">Поминки (Худойи/Чорлар)</span></td><td>Поминальный стол на 20–80 человек</td><td>Нарын 8 кг, лагман 10 кг, самса 40 шт</td></tr>
+        <tr><td><span class="badge badge-purple">Рождение (Бешик туй)</span></td><td>Угощение родственников и соседей</td><td>Самса 50 шт, манты 40 шт</td></tr>
+        <tr><td><span class="badge badge-purple">Корпоратив</span></td><td>Офисное застолье на 10–30 человек</td><td>Плов 5 кг, шашлык 3 кг, самса 20 шт</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 04 МЕРОПРИЯТИЯ -->
+  <section class="section" id="s4">
+    <div class="section-header"><span class="section-num">04</span><span class="section-title">Типы мероприятий</span></div>
+    <p>При оформлении заказа клиент выбирает тип мероприятия. Это помогает заведению понять контекст — объём, подачу и особенности приготовления.</p>
+    <div class="event-grid">
+      <div class="event-card"><div class="emoji">🤝</div><div class="name">Унаштирув</div><div class="name-uz">Помолвка</div></div>
+      <div class="event-card"><div class="emoji">💍</div><div class="name">Никох</div><div class="name-uz">Свадьба</div></div>
+      <div class="event-card"><div class="emoji">🕊</div><div class="name">Худойи</div><div class="name-uz">Поминки</div></div>
+      <div class="event-card"><div class="emoji">🙏</div><div class="name">Чорлар</div><div class="name-uz">Поминки 40 дней</div></div>
+      <div class="event-card"><div class="emoji">👶</div><div class="name">Бешик туй</div><div class="name-uz">Рождение ребёнка</div></div>
+      <div class="event-card"><div class="emoji">✂️</div><div class="name">Суннат туй</div><div class="name-uz">Обрезание</div></div>
+      <div class="event-card"><div class="emoji">🎂</div><div class="name">Юбилей</div><div class="name-uz">Юбилей</div></div>
+      <div class="event-card"><div class="emoji">🏢</div><div class="name">Корпоратив</div><div class="name-uz">Korporativ</div></div>
+      <div class="event-card"><div class="emoji">🌙</div><div class="name">Ифторлик</div><div class="name-uz">Ифтар (Рамадан)</div></div>
+      <div class="event-card"><div class="emoji">🫂</div><div class="name">Куда чакирик</div><div class="name-uz">Приглашение сватов</div></div>
+      <div class="event-card"><div class="emoji">🕯</div><div class="name">Поминки</div><div class="name-uz">Траурная трапеза</div></div>
+      <div class="event-card"><div class="emoji">➕</div><div class="name">Другое</div><div class="name-uz">Boshqa</div></div>
+    </div>
+  </section>
+
+  <!-- 05 КАТАЛОГ БЛЮД -->
+  <section class="section" id="s5">
+    <div class="section-header"><span class="section-num">05</span><span class="section-title">Каталог блюд</span></div>
+    <p>Блюда разделены на категории. Заказываются в кг или штуках. Минимальный объём устанавливается каждым заведением.</p>
+
+    <div class="dish-group">
+      <div class="dish-group-title">Первые блюда</div>
+      <div class="dish-card"><div class="dish-emoji">🍲</div><div class="dish-info"><div class="dish-name">Мохора</div><div class="dish-unit">Заказ в кг</div></div><div class="dish-min">мин. у мерчанта</div></div>
+      <div class="dish-card"><div class="dish-emoji">🍜</div><div class="dish-info"><div class="dish-name">Манпар</div><div class="dish-unit">Заказ в кг</div></div><div class="dish-min">мин. у мерчанта</div></div>
+      <div class="dish-card"><div class="dish-emoji">🥟</div><div class="dish-info"><div class="dish-name">Чучвара</div><div class="dish-unit">Заказ в шт или кг</div></div><div class="dish-min">мин. у мерчанта</div></div>
+      <div class="dish-card"><div class="dish-emoji">🍵</div><div class="dish-info"><div class="dish-name">Мастава</div><div class="dish-unit">Заказ в кг</div></div><div class="dish-min">мин. у мерчанта</div></div>
+      <div class="dish-card"><div class="dish-emoji">🍽</div><div class="dish-info"><div class="dish-name">Другие первые блюда</div><div class="dish-unit">По меню заведения</div></div><div class="dish-min">мин. у мерчанта</div></div>
+    </div>
+
+    <div class="dish-group">
+      <div class="dish-group-title">Вторые блюда</div>
+      <div class="dish-card"><div class="dish-emoji">🍚</div><div class="dish-info"><div class="dish-name">Плов</div><div class="dish-unit">Заказ в кг · шаг 0.5 кг</div></div><div class="dish-min">мин. 3 кг</div></div>
+      <div class="dish-card"><div class="dish-emoji">🍝</div><div class="dish-info"><div class="dish-name">Нарын</div><div class="dish-unit">Заказ в кг · шаг 0.5 кг</div></div><div class="dish-min">мин. 2 кг</div></div>
+      <div class="dish-card"><div class="dish-emoji">🍜</div><div class="dish-info"><div class="dish-name">Лагман</div><div class="dish-unit">Заказ в кг · шаг 0.5 кг</div></div><div class="dish-min">мин. 3 кг</div></div>
+      <div class="dish-card"><div class="dish-emoji">🥘</div><div class="dish-info"><div class="dish-name">Каурдак</div><div class="dish-unit">Заказ в кг · шаг 0.5 кг</div></div><div class="dish-min">мин. 2 кг</div></div>
+      <div class="dish-card"><div class="dish-emoji">🥟</div><div class="dish-info"><div class="dish-name">Самса</div><div class="dish-unit">Заказ в шт · шаг 5 шт</div></div><div class="dish-min">мин. 20 шт</div></div>
+      <div class="dish-card"><div class="dish-emoji">🫓</div><div class="dish-info"><div class="dish-name">Патыр</div><div class="dish-unit">Заказ в шт</div></div><div class="dish-min">мин. у мерчанта</div></div>
+      <div class="dish-card"><div class="dish-emoji">🍢</div><div class="dish-info"><div class="dish-name">Шашлыки</div><div class="dish-unit">Заказ в кг · шаг 0.5 кг</div></div><div class="dish-min">мин. 2 кг</div></div>
+      <div class="dish-card"><div class="dish-emoji">🫔</div><div class="dish-info"><div class="dish-name">Манты</div><div class="dish-unit">Заказ в шт · шаг 5 шт</div></div><div class="dish-min">мин. 30 шт</div></div>
+      <div class="dish-card"><div class="dish-emoji">🫕</div><div class="dish-info"><div class="dish-name">Дулма</div><div class="dish-unit">Заказ в шт или кг</div></div><div class="dish-min">мин. у мерчанта</div></div>
+      <div class="dish-card"><div class="dish-emoji">🍽</div><div class="dish-info"><div class="dish-name">Другие вторые блюда</div><div class="dish-unit">По меню заведения</div></div><div class="dish-min">мин. у мерчанта</div></div>
+    </div>
+
+    <div class="callout callout-warn"><strong>Важно:</strong> минимальный объём и цена за кг/шт устанавливается каждым заведением индивидуально и может отличаться.</div>
+  </section>
+
+  <!-- 06 АВТОРИЗАЦИЯ -->
+  <section class="section" id="s6">
+    <div class="section-header"><span class="section-num">06</span><span class="section-title">Click Super App — авторизация</span></div>
+    <div class="callout callout-click"><strong>MVP-формат:</strong> на первом этапе Togora Client работает как мини-апп внутри Click Super App. Отдельная регистрация не требуется — авторизация подтягивается из Click через OpenAPI.</div>
+    <h3>Флоу первого входа</h3>
+    <div class="flow">
+      <div class="flow-step active">Вход через Click</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Онбординг</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">Указание адреса доставки</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step active">Главный экран</div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Шаг</th><th>Описание</th></tr></thead>
+      <tbody>
+        <tr><td><b>Вход через Click</b></td><td>Пользователь открывает мини-апп Togora внутри Click Super App. Данные профиля (имя, телефон) подтягиваются автоматически через OpenAPI</td></tr>
+        <tr><td><b>Онбординг</b></td><td>Краткое знакомство с платформой: что такое Tog'ora, как работают слоты и предзаказ</td></tr>
+        <tr><td><b>Адрес доставки</b></td><td>Пользователь указывает основной адрес доставки — на карте или ручным вводом</td></tr>
+        <tr><td><b>Главный экран</b></td><td>Открывается лента с ресторанами и блюдами</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 07 ГЛАВНЫЙ ЭКРАН -->
+  <section class="section" id="s7">
+    <div class="section-header"><span class="section-num">07</span><span class="section-title">Главный экран</span></div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Header</span> Шапка</div>
+      <ul class="bullet-list">
+        <li><b>Адрес доставки</b> — текущий выбранный адрес, нажатие открывает смену адреса</li>
+        <li><b>Иконка уведомлений</b> — переход в центр уведомлений</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Search</span> Поле поиска</div>
+      <ul class="bullet-list">
+        <li>Поиск по названию блюда, заведению, типу мероприятия</li>
+        <li>Нажатие открывает экран полного поиска</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Widget</span> Виджет карточек ресторанов</div>
+      <ul class="bullet-list">
+        <li>Горизонтальный или вертикальный список заведений-партнёров</li>
+        <li>Карточка: лого, название, рейтинг, специализация, ближайший слот</li>
+        <li>Кнопка "Все" — переход в полный каталог заведений</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Widget</span> Виджет категорий блюд</div>
+      <ul class="bullet-list">
+        <li>Горизонтальный скролл иконок категорий: Первые блюда, Плов, Самса, Манты, Шашлык…</li>
+        <li>Нажатие на категорию — фильтрация ленты по типу блюда</li>
+        <li>Кнопка "Все" — переход в полный каталог категорий</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Widget</span> Виджет мероприятий</div>
+      <ul class="bullet-list">
+        <li>Карточки типов мероприятий: Никох, Суннат туй, Худойи, Бешик туй…</li>
+        <li>Нажатие — фильтрация заведений и блюд под данное мероприятие</li>
+        <li>Кнопка "Все" — переход в полный каталог мероприятий</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Widget</span> Виджеты категорий (лента блюд)</div>
+      <ul class="bullet-list">
+        <li>Секции по категориям блюд с горизонтальным скроллом карточек товаров</li>
+        <li>Каждая секция: заголовок категории + карточки блюд + кнопка "Все"</li>
+        <li>Карточка товара: фото, название, цена за кг/шт, минимальный заказ, заведение</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Widget</span> Виджет рилсов</div>
+      <ul class="bullet-list">
+        <li>Отображается только при наличии видеоконтента от заведений</li>
+        <li>Короткие видео приготовления блюд, анонсы, промо</li>
+        <li>Нажатие — открытие просмотра рилса на весь экран</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 08 КАТАЛОГ -->
+  <section class="section" id="s8">
+    <div class="section-header"><span class="section-num">08</span><span class="section-title">Каталог и поиск</span></div>
+    <h3>Список категорий</h3>
+    <p>Полный список категорий блюд с иконками. При выборе категории отображается лента заведений и блюд данной категории. Поддерживается мультивыбор категорий.</p>
+    <h3>Список мероприятий</h3>
+    <p>Полный каталог типов мероприятий. При выборе мероприятия система фильтрует заведения, которые специализируются на данном типе торжества, и показывает рекомендованные блюда.</p>
+    <h3>Поиск</h3>
+    <ul class="bullet-list">
+      <li><b>По блюду</b> — "плов", "нарын", "самса", "манпар"</li>
+      <li><b>По заведению</b> — название ресторана</li>
+      <li><b>По мероприятию</b> — "свадьба", "обрезание", "aza"</li>
+      <li><b>История поиска</b> — последние запросы пользователя</li>
+    </ul>
+    <h3>Фильтры каталога заведений</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Фильтр</th><th>Значения</th></tr></thead>
+      <tbody>
+        <tr><td>Тип мероприятия</td><td>Никох, Суннат туй, Худойи, Чорлар, Бешик туй, Юбилей, Корпоратив, Ифторлик, Куда чакирик, Поминки, Другое</td></tr>
+        <tr><td>Категория блюд</td><td>Первые блюда, Плов, Нарын, Лагман, Самса, Манты, Шашлык и др.</td></tr>
+        <tr><td>Дата доставки</td><td>Сегодня, завтра, выбрать дату</td></tr>
+        <tr><td>Временной слот</td><td>12 слотов на выбранную дату</td></tr>
+        <tr><td>Рейтинг</td><td>От 4.0 / от 4.5 / от 5.0</td></tr>
+        <tr><td>Сортировка</td><td>По популярности, рейтингу, цене</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 09 СТРАНИЦА ЗАВЕДЕНИЯ -->
+  <section class="section" id="s9">
+    <div class="section-header"><span class="section-num">09</span><span class="section-title">Страница заведения</span></div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Header</span> Виджет информации о заведении</div>
+      <ul class="bullet-list">
+        <li><b>Лого</b> — фото заведения</li>
+        <li><b>Название</b> — название ресторана/заведения</li>
+        <li><b>Рейтинг</b> — средняя оценка и количество отзывов</li>
+        <li><b>Специализация</b> — типы мероприятий и блюд</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Tabs</span> Категории блюд в виде табов</div>
+      <ul class="bullet-list">
+        <li>Горизонтальные табы по категориям: Первые блюда, Плов, Самса, Манты…</li>
+        <li>Нажатие на таб — прокрутка к соответствующей секции меню</li>
+        <li>Активный таб подсвечивается при скролле</li>
+      </ul>
+    </div>
+
+    <div class="screen-block">
+      <div class="screen-title"><span class="num">Menu</span> Список блюд</div>
+      <ul class="bullet-list">
+        <li>Блюда сгруппированы по категориям согласно табам</li>
+        <li>Карточка блюда: фото, название, цена за кг/шт, минимальный заказ, кнопка добавления</li>
+        <li>Нажатие на карточку — открытие полной карточки блюда (всплывающее окно снизу)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10 КАРТОЧКА БЛЮДА -->
+  <section class="section" id="s10">
+    <div class="section-header"><span class="section-num">10</span><span class="section-title">Карточка блюда</span></div>
+    <div class="callout"><strong>Формат:</strong> всплывающее окно снизу (bottom sheet). Открывается при нажатии на блюдо в каталоге или меню заведения.</div>
+
+    <div class="table-wrap"><table>
+      <thead><tr><th>Элемент</th><th>Описание</th></tr></thead>
+      <tbody>
+        <tr><td>Фото</td><td>Фотография блюда от данного заведения</td></tr>
+        <tr><td>Иконка избранного</td><td>Добавить/убрать блюдо из избранного (сердечко)</td></tr>
+        <tr><td>Иконка закрытия</td><td>Кнопка закрытия bottom sheet</td></tr>
+        <tr><td>Название</td><td>Название блюда на русском и узбекском</td></tr>
+        <tr><td>Цена</td><td>Цена за кг или за штуку в UZS</td></tr>
+        <tr><td>Минимальный заказ</td><td>Минимальный объём (напр. 3 кг, 20 шт)</td></tr>
+        <tr><td>Среднее время готовки</td><td>Примерное время приготовления данного блюда</td></tr>
+        <tr><td>Описание</td><td>Состав, особенности приготовления, информация об аллергенах</td></tr>
+        <tr><td>Тэги</td><td>Название заведения, категория блюда, типы мероприятий для которых подходит</td></tr>
+        <tr><td>Счётчик объёма</td><td>+/- с шагом (0.5 кг для весовых, 5 шт для штучных)</td></tr>
+        <tr><td>Кнопка</td><td>"Добавить в корзину" — добавляет выбранный объём</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 11 КОРЗИНА -->
+  <section class="section" id="s11">
+    <div class="section-header"><span class="section-num">11</span><span class="section-title">Корзина</span></div>
+    <div class="callout callout-warn"><strong>Ограничение:</strong> в корзине могут находиться блюда только одного заведения. При попытке добавить блюдо из другого заведения — система предложит очистить корзину или сохранить текущую.</div>
+    <ul class="bullet-list">
+      <li><b>Список позиций</b> — блюдо, объём (кг/шт), цена за единицу, итоговая цена позиции</li>
+      <li><b>Изменение количества</b> — счётчик +/- прямо в корзине</li>
+      <li><b>Удаление позиции</b> — свайп влево или кнопка удаления</li>
+      <li><b>Информация о заведении</b> — лого и название заведения в шапке корзины</li>
+      <li><b>Сумма заказа</b> — сумма позиций + стоимость доставки</li>
+      <li><b>Кнопка</b> — "Оформить заказ" → переход к оформлению</li>
+    </ul>
+  </section>
+
+  <!-- 12 ОФОРМЛЕНИЕ -->
+  <section class="section" id="s12">
+    <div class="section-header"><span class="section-num">12</span><span class="section-title">Оформление заказа</span></div>
+    <h3>Шаги оформления</h3>
+    <div class="flow">
+      <div class="flow-step active">Адрес</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step active">Слот</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step active">Состав</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step active">Комментарий</div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step active">Оплата</div>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Блок</th><th>Элементы</th><th>Примечание</th></tr></thead>
+      <tbody>
+        <tr><td><b>Адрес доставки</b></td><td>Список сохранённых адресов, добавление нового, выбор на карте</td><td>Выбор или назначение адреса</td></tr>
+        <tr><td><b>Получатель</b></td><td>Имя и телефон из профиля Click</td><td>Не редактируется — подтягивается автоматически</td></tr>
+        <tr><td><b>Слот доставки</b></td><td>Выбор даты (сегодня / завтра / другая) + выбор временного окна из доступных</td><td>Минимум от 1 часа от текущего времени</td></tr>
+        <tr><td><b>Состав заказа</b></td><td>Список блюд с объёмами и ценами — только для просмотра</td><td>Редактирование — в корзине</td></tr>
+        <tr><td><b>Комментарий</b></td><td>Текстовое поле: особые пожелания к заказу, инструкции для курьера</td><td>Необязательное поле</td></tr>
+        <tr><td><b>Итого</b></td><td>Сумма позиций + доставка = итоговая сумма</td><td>—</td></tr>
+        <tr><td><b>Кнопка</b></td><td>"Перейти к оплате"</td><td>→ модуль оплаты Click</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 13 ОПЛАТА -->
+  <section class="section" id="s13">
+    <div class="section-header"><span class="section-num">13</span><span class="section-title">Оплата</span></div>
+    <div class="callout callout-click"><strong>Click Super App:</strong> оплата производится онлайн через встроенный модуль оплаты Click Super App. Отдельный ввод данных карты не требуется — используются сохранённые платёжные данные пользователя Click.</div>
+    <ul class="bullet-list">
+      <li><b>Способы оплаты</b> — средства на балансе Click, привязанные карты Uzcard/Humo/Visa</li>
+      <li><b>Подтверждение</b> — пользователь подтверждает сумму и нажимает "Оплатить"</li>
+      <li><b>Успешная оплата</b> — заказ создаётся, отображается экран подтверждения с номером заказа и слотом доставки</li>
+      <li><b>Ошибка оплаты</b> — уведомление об ошибке, возможность повторить попытку</li>
+    </ul>
+  </section>
+
+  <!-- 14 ОТСЛЕЖИВАНИЕ -->
+  <section class="section" id="s14">
+    <div class="section-header"><span class="section-num">14</span><span class="section-title">Отслеживание заказа</span></div>
+    <div class="status-flow">
+      <div class="status-item"><div class="status-dot" style="background:#6b7280"></div><div><b>Создан</b> — заказ оформлен и оплачен, ожидает подтверждения заведения</div></div>
+      <div class="status-item"><div class="status-dot" style="background:#2563EB"></div><div><b>Подтверждён</b> — заведение приняло заказ, начнёт готовить в назначенное время</div></div>
+      <div class="status-item"><div class="status-dot" style="background:#f59e0b"></div><div><b>Готовится</b> — заведение приступило к приготовлению блюд</div></div>
+      <div class="status-item"><div class="status-dot" style="background:#8b5cf6"></div><div><b>В пути</b> — курьер забрал заказ и едет к клиенту. Отображается карта с позицией курьера и расчётным временем прибытия</div></div>
+      <div class="status-item"><div class="status-dot" style="background:#10b981"></div><div><b>Доставлен</b> — заказ передан клиенту. Появляется запрос оценки заведения</div></div>
+    </div>
+  </section>
+
+  <!-- 15 ИСТОРИЯ -->
+  <section class="section" id="s15">
+    <div class="section-header"><span class="section-num">15</span><span class="section-title">История заказов</span></div>
+    <ul class="bullet-list">
+      <li><b>Активные заказы</b> — вверху, с текущим статусом и кнопкой "Отследить"</li>
+      <li><b>Прошлые заказы</b> — дата, заведение, состав и объёмы, сумма, статус</li>
+      <li><b>Повторить заказ</b> — кнопка быстрого добавления тех же позиций в корзину</li>
+      <li><b>Детали заказа</b> — полный состав, адрес, слот, информация о курьере, чек</li>
+      <li><b>Оценка заведения</b> — возможность оставить отзыв после завершения заказа</li>
+    </ul>
+  </section>
+
+  <!-- 16 ИЗБРАННОЕ -->
+  <section class="section" id="s16">
+    <div class="section-header"><span class="section-num">16</span><span class="section-title">Избранное</span></div>
+    <p>Раздел для сохранённых блюд и заведений. Позволяет быстро находить и повторно заказывать любимые позиции.</p>
+    <div class="two-col">
+      <div class="screen-block">
+        <div class="screen-title"><span class="num">Блюда</span> Избранные блюда</div>
+        <ul class="bullet-list">
+          <li>Список блюд добавленных через иконку сердечка в карточке</li>
+          <li>Быстрое добавление в корзину без открытия карточки</li>
+          <li>Удаление из избранного свайпом</li>
+        </ul>
+      </div>
+      <div class="screen-block">
+        <div class="screen-title"><span class="num">Заведения</span> Избранные заведения</div>
+        <ul class="bullet-list">
+          <li>Список сохранённых заведений</li>
+          <li>Быстрый переход на страницу заведения</li>
+          <li>Уведомление о новых блюдах в избранном заведении</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 17 ПРОФИЛЬ -->
+  <section class="section" id="s17">
+    <div class="section-header"><span class="section-num">17</span><span class="section-title">Профиль и адреса</span></div>
+    <div class="callout callout-click"><strong>Click профиль:</strong> имя и номер телефона подтягиваются из аккаунта Click и не редактируются внутри Togora.</div>
+    <ul class="bullet-list">
+      <li><b>Личные данные</b> — имя, номер телефона (только просмотр, из Click)</li>
+      <li><b>Мои адреса</b> — список адресов доставки, добавление и редактирование</li>
+      <li><b>История заказов</b> — переход к разделу истории</li>
+      <li><b>Избранное</b> — переход к избранным блюдам и заведениям</li>
+      <li><b>Язык</b> — RU / UZ</li>
+      <li><b>Уведомления</b> — настройки push-уведомлений</li>
+      <li><b>Поддержка</b> — FAQ, обратная связь</li>
+    </ul>
+    <h3>Управление адресами</h3>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Поле</th><th>Описание</th></tr></thead>
+      <tbody>
+        <tr><td>Название</td><td>Дом, Работа, Место мероприятия, Другое</td></tr>
+        <tr><td>Адрес</td><td>Выбор на карте или ручной ввод улицы, дома, квартиры</td></tr>
+        <tr><td>Комментарий</td><td>Инструкции для курьера (код домофона, ориентир, этаж)</td></tr>
+        <tr><td>По умолчанию</td><td>Основной адрес — подставляется автоматически при оформлении</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 18 УВЕДОМЛЕНИЯ -->
+  <section class="section" id="s18">
+    <div class="section-header"><span class="section-num">18</span><span class="section-title">Уведомления</span></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Событие</th><th>Текст уведомления</th><th>Тип</th></tr></thead>
+      <tbody>
+        <tr><td>Заказ подтверждён заведением</td><td>"Ваш заказ принят. [Блюдо] будет доставлен [дата, слот]"</td><td><span class="badge badge-blue">Push</span></td></tr>
+        <tr><td>Начало приготовления</td><td>"Заведение приступило к приготовлению вашего заказа"</td><td><span class="badge badge-blue">Push</span></td></tr>
+        <tr><td>Курьер выехал</td><td>"Курьер везёт ваш заказ. Ожидайте с [время] до [время]"</td><td><span class="badge badge-blue">Push</span></td></tr>
+        <tr><td>Напоминание за день</td><td>"Завтра доставка вашего заказа к [тип мероприятия]. Слот: [время]"</td><td><span class="badge badge-blue">Push</span></td></tr>
+        <tr><td>Заказ доставлен</td><td>"Заказ доставлен. Оцените заведение!"</td><td><span class="badge badge-blue">Push</span></td></tr>
+        <tr><td>Отмена заказа</td><td>"Ваш заказ #[номер] отменён. Средства будут возвращены на баланс Click"</td><td><span class="badge badge-blue">Push</span></td></tr>
+        <tr><td>Промо-акция</td><td>Специальные предложения от заведений</td><td><span class="badge badge-gray">In-app</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 19 СТАТУСЫ -->
+  <section class="section" id="s19">
+    <div class="section-header"><span class="section-num">19</span><span class="section-title">Статусы заказа</span></div>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Статус</th><th>Что видит клиент</th><th>Доступные действия</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-gray">Created</span></td><td>Заказ оформлен и оплачен, ожидает заведения</td><td>Отмена заказа</td></tr>
+        <tr><td><span class="badge badge-blue">Confirmed</span></td><td>Заведение подтвердило заказ</td><td>Просмотр деталей</td></tr>
+        <tr><td><span class="badge badge-orange">Planned</span></td><td>Запланировано к приготовлению</td><td>Просмотр деталей</td></tr>
+        <tr><td><span class="badge badge-orange">Assigned</span></td><td>Курьер назначен</td><td>Просмотр информации о курьере</td></tr>
+        <tr><td><span class="badge badge-purple">In Delivery</span></td><td>Курьер едет к вам</td><td>Карта, звонок курьеру</td></tr>
+        <tr><td><span class="badge badge-green">Completed</span></td><td>Заказ доставлен</td><td>Оценить заведение, повторить заказ</td></tr>
+        <tr><td><span class="badge badge-gray">Closed</span></td><td>Заказ закрыт</td><td>Просмотр чека</td></tr>
+        <tr><td><span class="badge badge-red">Cancelled</span></td><td>Заказ отменён</td><td>Просмотр причины, возврат средств</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <!-- 20 СЦЕНАРИИ -->
+  <section class="section" id="s20">
+    <div class="section-header"><span class="section-num">20</span><span class="section-title">Пользовательские сценарии</span></div>
+
+    <h3>Сценарий 1: Первый заказ на никох (свадьбу)</h3>
+    <div class="flow">
+      <div class="flow-step">Вход через Click</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Онбординг</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Фильтр "Никох"</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Заведение</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Плов 30 кг + Самса 80 шт</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Слот + адрес</div><div class="flow-arrow">→</div>
+      <div class="flow-step active">Оплата Click</div>
+    </div>
+
+    <h3>Сценарий 2: Заказ на чорлар (поминки 40 дней)</h3>
+    <div class="flow">
+      <div class="flow-step">Поиск "нарын"</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Заведение</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Нарын 8 кг + Лагман 5 кг</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Слот</div><div class="flow-arrow">→</div>
+      <div class="flow-step active">Оплата Click</div>
+    </div>
+
+    <h3>Сценарий 3: Повторный заказ</h3>
+    <div class="flow">
+      <div class="flow-step">История заказов</div><div class="flow-arrow">→</div>
+      <div class="flow-step">"Повторить"</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Корзина</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Скорректировать объём</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Новый слот</div><div class="flow-arrow">→</div>
+      <div class="flow-step active">Оплата Click</div>
+    </div>
+
+    <h3>Сценарий 4: Отслеживание заказа</h3>
+    <div class="flow">
+      <div class="flow-step">Push-уведомление</div><div class="flow-arrow">→</div>
+      <div class="flow-step">История заказов</div><div class="flow-arrow">→</div>
+      <div class="flow-step">Активный заказ</div><div class="flow-arrow">→</div>
+      <div class="flow-step active">Карта с курьером</div>
+    </div>
+  </section>
+
+  <!-- 21 CHANGELOG -->
+  <section class="section" id="s21">
+    <div class="section-header"><span class="section-num">21</span><span class="section-title">Changelog</span></div>
+    <p>История изменений продуктовой документации.</p>
+    <div class="table-wrap"><table>
+      <thead><tr><th>Версия</th><th>Дата</th><th>Изменения</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="badge badge-blue">v1.1</span></td>
+          <td>Март 2026</td>
+          <td>Обновлена концепция: исправлены ключевые отличия от обычной доставки. Обновлён глоссарий (добавлены Click Super App, Mini App). Минимальный срок предзаказа изменён на 1 час. Расширен список типов мероприятий (12 типов: Унаштирув, Никох, Худойи, Чорлар, Бешик туй, Суннат туй, Юбилей, Корпоратив, Ифторлик, Куда чакирик, Поминки, Другое). Расширен каталог блюд (первые и вторые блюда). Авторизация через Click Super App (OpenAPI). Обновлён флоу главного экрана, оформления заказа, карточки блюда. Добавлены разделы: Избранное, Оплата через Click.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-gray">v1.0</span></td>
+          <td>Март 2026</td>
+          <td>Первая версия документации клиентского приложения.</td>
+        </tr>
+      </tbody>
+    </table></div>
+  </section>
+
+</main>
+
+<script>
+function go(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({behavior:'smooth'});
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.target.closest('.nav-item').classList.add('active');
+}
+const sections = document.querySelectorAll('.section');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.remove('active');
+    if (n.getAttribute('onclick')?.includes(current)) n.classList.add('active');
+  });
+}, {passive:true});
+</script>
+</body>
+</html>
