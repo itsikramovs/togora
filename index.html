@@ -103,9 +103,8 @@ iframe{width:100%;height:100%;border:none;display:block}
   <button class="nav-tab" data-id="merchant" onclick="openDoc('merchant')">
     <span class="dot"></span>Мерчант
   </button>
-  <button class="nav-tab soon" data-id="client">
+  <button class="nav-tab" data-id="client" onclick="openDoc('client')">
     <span class="dot"></span>Клиент
-    <span class="soon-badge">скоро</span>
   </button>
   <button class="nav-tab soon" data-id="admin">
     <span class="dot"></span>Админ
@@ -115,7 +114,7 @@ iframe{width:100%;height:100%;border:none;display:block}
   <button class="nav-tab" data-id="changelog" onclick="openChangelog()">
     <span style="font-size:11px">📋</span>Changelog
   </button>
-  <div class="nav-right">2 / 4 модуля</div>
+  <div class="nav-right">3 / 4 модуля</div>
 </nav>
 
 <!-- HOME -->
@@ -145,7 +144,7 @@ iframe{width:100%;height:100%;border:none;display:block}
       </div>
     </div>
 
-    <div class="card client soon">
+    <div class="card client" onclick="openDoc('client')">
       <div class="card-icon">📱</div>
       <div class="card-title">Клиент</div>
       <div class="card-desc">Клиентское приложение. Документация будет добавлена.</div>
@@ -185,6 +184,15 @@ iframe{width:100%;height:100%;border:none;display:block}
   <iframe src="togora-merchant-docs.html" onload="loaded('merchant')"></iframe>
 </div>
 
+<!-- CLIENT -->
+<div class="frame-wrap" id="wrap-client">
+  <div class="frame-loader" id="loader-client">
+    <div class="spinner"></div>
+    <span class="loader-text">Загрузка документации...</span>
+  </div>
+  <iframe src="togora-client-docs.html" onload="loaded('client')"></iframe>
+</div>
+
 <!-- CHANGELOG -->
 <div class="frame-wrap" id="wrap-changelog">
   <div style="height:100%;overflow-y:auto;padding:40px;max-width:800px;margin:0 auto">
@@ -200,7 +208,7 @@ iframe{width:100%;height:100%;border:none;display:block}
 </div>
 
 <script>
-const modules = ['courier','merchant','changelog'];
+const modules = ['courier','merchant','client','changelog'];
 
 function openChangelog() {
   document.getElementById('home').classList.add('hidden');
